@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #lunbo{
+            width:100%;
+            height:500px;
+            position: relative;
+            overflow: hidden;
+        }
+   
+        .last ,.next{
+            width:40px;
+            height:60px;
+            background-color:rgba(255,255,255,0.3);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size:50px;
+            text-align: center;
+            color:#666666;
+            cursor: pointer;
+            position: absolute;
+            top:220px;
+        }
+        .last{
+            left:50px;
+        }
+        .next{
+            right:50px;
+        }
+        .last:hover  ,
+        .next:hover{
+            background-color:rgba(255,255,255,0.6)
+        }
+
+        #lunbo .black{
+            width:inherit;
+            height: 40px;
+            background-color:rgba(0,0,0,0.7);
+            position: absolute;
+            left:0;
+            bottom:0;
+        }
+
+        #lunbo .num{
+            position: absolute;
+            right:10px;
+            bottom:8px;
+        }
+        #lunbo .num span{
+            display: inline-block;
+            width:20px;
+            height:24px;
+            background-color:#999999;
+            text-align: center;
+            line-height: 24px;
+            color:#ffffff;
+            font-size:14px;
+            margin-right:10px;
+            cursor: pointer;
+
+        }
+
+        #lunbo .num span:hover{
+            background-color:#ff5857;
+        }
+
+        #lunbo .num .active{
+            background-color:#ff5857;
+        }
+       
+        .imgbox img{
+            width:100%;
+            height:500px;
+            display: inline-block;
+            
+        }
+    </style>
+
+    <!--
+        1.内部有一张图片
+        2.两个箭头
+        3.右下角的小正方形
+        4.有些字，黑底
+    -->
+</head>
+<body>
+  <!--总的容器-->
+  <div id="lunbo">
+   <div class="imgbox">
+    <img src="images/1.jpg" alt="1"  />
+    <img src="images/2.jpg" alt="2"  />
+    <img src="images/3.jpg" alt="3"  />
+    <img src="images/4.jpg" alt="4"  />
+    <img src="images/5.jpg" alt="5" />
+ </div>
+    <div class="last">&lt</div>
+    <div class="next">&gt</div>
+
+
+    <!--文字黑底-->
+    <div class="black">
+        <!--小正方形-->
+       <div class="num">
+          <span class="active" >1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+          <span>5</span>
+       </div>
+    </div>
+
+  </div>
+
+  <script>
+
+      $(function(){
+          /*获取左右箭头*/
+         var left=$(".last");
+         var right=$(".next");
+         var box=$(".num span");
+         var i=0;
+         //设置一个定时器
+         var timer=null;
+
+         //设置第一张图片显示
+         $("img").eq(0).show().siblings("img").hide();
+
+         //轮播时间函数
+         showtime();
+
+         //鼠标经过下面的box的时候
+         box.hover(
+             function()
+             {
+                 //获取当前的i值
+                 i=$(this).index();
+             }
+         );
+
+         function showtime(){
+              timer=setInterval(function(){
+                  Show();  //显示函数
+                  i++;
+                  if(i==5)
+                  {
+                      i=0;
+                  }
+              },5000);
+         }
+
+         //鼠标在图片时停止动画
+         $("img").hover(
+         function(){
+                clearInterval(timer);
+         },function()
+         {
+             showtime();
+         }
+         
+         );
+
+         //鼠标点击右箭头
+
+         right.click(
+             function ()
+             {
+                 clearInterval(timer);
+                 //先判断当前是第几张
+                 i++;
+                 if(i==5)
+                 {
+                     i=0;
+                 }
+                 
+                 Show();
+                 showtime();
+             }
+         );
+         //左函数
+         left.click(
+             function ()
+             {
+                 clearInterval(timer);
+                 //先判断当前是第几张
+                 if(i==0)
+                 {
+                     i=5;
+                 }
+                 i--;
+                 Show();
+                 showtime();
+             }
+         );
+
+         //鼠标经过小方块的时候
+         box.hover(
+             function()
+             {
+                 i=$(this).index();
+                 Show();
+                 clearInterval(timer);
+
+
+             },function(){
+                 showtime();
+             }
+         );
+
+
+        //显示图片
+         function Show()
+         {
+            
+             $("img").eq(i).fadeIn().siblings("img").fadeOut();
+             box.eq(i).addClass("active").siblings(box).removeClass("active");
+         }
+
+
+      })
+  
+  </script>
+</body>
+</html>
