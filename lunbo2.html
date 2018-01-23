@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #lunbobox {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            float: left;
+        }
+
+        .lunbo {
+            width: 100%;
+            height: 400px;
+        }
+
+        .lunbo img {
+            width: 100%;
+            height: 400px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        #lunbobox ul {
+            position: absolute;
+            bottom: 20px;
+            z-index: 5;
+            width: auto;
+            left: 50%;
+            transform: translateX(-50%);
+
+        }
+   
+        #lunbobox ul li {
+border-radius: 50%;
+cursor: pointer;
+width: 10px;
+height: 10px;
+float: left;
+list-style: none;
+text-align: center;
+margin: 0px 10px 0px 5px;
+background-color: rgb(40, 54, 247);
+}
+
+  /*长方形点
+        #lunbobox ul li {
+
+            cursor: pointer;
+            width: 30px;
+            height: 5px;
+            float: left;
+            list-style: none;
+            text-align: center;
+            margin: 0px 5px 0px 5px;
+            background-color: rgb(40, 54, 247);
+        }
+
+*/
+
+
+    /*代码箭头-------------------------------------------------*/
+       /* #left {
+
+            display:block;
+            width: 100px;
+            height: 400px;
+            font-size: 40px;
+            line-height: 400px;
+
+            text-align: center;
+            color: #000000;
+            background: -webkit-linear-gradient(left, black, white);
+            //background:#cccccc;
+	
+            //background:url("../images/toleft.jpg")no-repeat center;
+	
+            position: absolute;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0.3;
+            top:0;
+        }
+
+        #right {
+            right: 0;
+            display: block;
+            width: 100px;
+            height: 400px;
+            font-size: 40px;
+            line-height: 400px;
+            text-align: center;
+            color: #000000;
+            background: -webkit-linear-gradient(left, white, black);
+            //background:#cccccc;
+	
+            //background:url("../images/toleft.jpg")no-repeat center;
+	
+            position: absolute;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0.3;
+            top:0;
+        }*/
+        /*----------------------------------------------------------*/
+
+    
+        
+        .active{
+            background-color:rgb(87, 87, 87) !important;
+            border: 1px solid #999;
+        }
+        #left:hover,
+        #right:hover {
+            opacity: 1;
+        }
+        #left {
+	background-image: url(images/nav.png);
+	display: block;
+	width: 42px;
+	height: 42px;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0.5;
+	left: 10px;
+	position: absolute;
+	cursor: pointer;
+	z-index: 999;           
+        }
+       
+
+        #right {
+	background-image: url(images/nav.png);
+    background-position: right;
+	display: block;
+	width: 42px;
+	height: 42px;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0.5;
+	right: 10px;
+	position: absolute;
+	cursor: pointer;
+	z-index: 999;           
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <!--轮播外层-->
+    <div id="lunbobox">
+
+
+        <div class="lunbo">
+            
+                <img src="images/1.jpg"/>
+                <img src="images/2.jpg"/>
+                <img src="images/3.jpg"/>
+                <img src="images/4.jpg"/>
+                <img src="images/5.jpg"/>
+
+            
+            
+        </div>
+        <!--代码箭头
+        <div id="left">&lt;</div>
+        <div id="right">&gt;</div>
+        -->
+
+        <!--左右箭头-->
+        <div id="left"></div>
+        <div id="right"></div>
+        <ul>
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+
+        <!--圆点-->
+
+
+        <span></span>
+    </div>
+    <script>
+
+            var t;
+
+            /*当前索引*/
+            var index = 0;
+
+            t = setInterval(play, 3000);
+
+
+            /*动画函数*/
+            function play() {
+                index++;
+                if (index > 4) {
+                    index = 0;
+                }
+                //小圆点效果
+                $("#lunbobox ul li").eq(index).addClass("active").siblings().removeClass("active");
+
+                 //图片动画效果   
+                $("img").eq(index).fadeIn(1000).siblings().fadeOut(1000);
+
+            }
+
+            $("#lunbobox ul li").click(
+                function () {
+                    $(this).addClass("active").siblings().removeClass("active");
+                    var index = $(this).index();  //获取索引图片
+                    $("img").eq(index).fadeIn(500).siblings().fadeOut(500);
+                }
+            );
+
+
+            //左箭头
+            $("#left").click(
+                function () {
+                    index--;
+                    if (index <= -1) {
+                        index = 4;
+                    }
+
+                    $("#lunbobox ul li").eq(index).addClass("active").siblings().removeClass("active");
+
+                    $("img").eq(index).fadeIn(500).siblings().fadeOut(500);
+                }
+            );
+
+            //右箭头
+
+            $("#right").click(
+                function () {
+
+                    index++;
+                    if (index >= 5) {
+                        index = 0;
+                    }
+
+                    $("#lunbobox ul li").eq(index).addClass("active").siblings().removeClass("active");
+
+                    $("img").eq(index).fadeIn(500).siblings().fadeOut(500);
+                }
+            );
+
+
+      //鼠标在图片的时候停止动画
+            $("#lunbobox").hover(
+                function()
+                {
+                    clearInterval(t);
+                },function()
+                {
+                    t=setInterval(play,3000);       
+                }
+            );
+
+
+
+
+
+    </script>
+</body>
+
+</html>
